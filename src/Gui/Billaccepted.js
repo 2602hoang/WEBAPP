@@ -9,6 +9,7 @@ import SubMenu from 'antd/es/menu/SubMenu';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { formattedTimestamp } from '../utils/DateTime';
+import { URL } from '../contexts/url';
 
 function Billaccepted() {
     let [searchParams, setSearchParams] = useSearchParams()
@@ -33,7 +34,7 @@ function Billaccepted() {
     const [isActive, setIsActive] = useState(false);
     const xacnhanmon = async (id) => {
         try {
-            const response = await axios.patch(`/api/v1/bills/finished/${id}`)
+            const response = await axios.post(`${URL}/api/v1/bills/finished/${id}`)
 
             if (response.data.statusCode === 200) {
                 setXacnhan(response.data.data);
@@ -48,11 +49,11 @@ function Billaccepted() {
 
     const getBillaccepted = async () => {
         try {
-            const response = await axios.get(`/api/v1/booking/table/${banid}`)
+            const response = await axios.get(`${URL}/api/v1/booking/table/${banid}`)
 
             if (response.data.statusCode === 200) {
                 setBillaccepted(response.data.data);
-                console.log("okee1234", response.data.data);
+                console.log("okee12341", response.data.data);
 
             }
 

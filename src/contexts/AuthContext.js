@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from 'react'
 import axios from 'axios';
 // import { URL } from './url';
 import { toast } from 'react-toastify';
+import { URL } from './url';
 
 
 export const AuthContext = createContext()
@@ -32,10 +33,10 @@ export const AuthContextProvider = ({ children }) => {
 		console.log(password);
 				
 		try {
-			const response = await axios.post(`/api/v1/auth/sign-in`, 
+			const response = await axios.post(`${URL}/api/v1/auth/sign-in`, 
 			
 			{
-				username: username,
+				email: username,
 				password: password,
 			  } )
 			

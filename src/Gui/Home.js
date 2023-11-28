@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 //import Table from './Tables';
 import axios from 'axios';
+import { URL } from '../contexts/url';
 
 //import { URL } from '../contexts/url';
 
@@ -42,7 +43,7 @@ function Home() {
     const getBan = async () => {
         // console.log(`${URL}api/v1/tables`);
         try {
-            const response = await axios.get(`/api/v1/tables/all`)
+            const response = await axios.get(`${URL}/api/v1/tables/all`)
 
             if (response.data.statusCode === 200) {
                 setban(response.data.data);
@@ -53,6 +54,37 @@ function Home() {
         } catch (error) {
             console.log('error: ', error);
         }
+    }
+    const getBanIDsudung = async () => {
+        try {
+            const response = await axios.get(`/api/v1/tables/status/false`)
+
+            if (response.data.message === "Read Table by employeeId and status success: congrats!") {
+                setban(response.data.data);
+            }
+            // console.log("ok",JSON.parse(response.data.data));
+
+        } catch (error) {
+            
+            console.log('error: ', error);
+        }
+        
+    }
+    const getBanIDcontrong = async () => {
+        try {
+            const response = await axios.get(`/api/v1/tables/status/true`)
+
+            if (response.data.message === "Read Table by employeeId and status success: congrats!") {
+                setban(response.data.data);
+            }
+            // console.log('con trong')
+            // console.log("ok",response.data.data);
+
+        } catch (error) {
+            
+            console.log('error: ', error);
+        }
+        
     }
     const nav = useNavigate();
     const [ban, setban] = useState([]);
@@ -67,9 +99,9 @@ function Home() {
         await Logout()
         window.location.reload(false);
     }
-    const onMenuClcik = (item) => {
-        nav(`${item.key}`)
-    }
+    // const onMenuClcik = (item) => {
+    //     nav(`${item.key}`)
+    // }
     
     return (
 
@@ -89,7 +121,7 @@ function Home() {
                     defaultOpenKeys={['sub1']}
 
 
-                    onClick={onMenuClcik}
+                    // onClick={onMenuClcik}
                     mode="horizontal" style={{ lineHeight: '64px', }}>
 
                     <Menu.Item key="/" style={{ marginRight: 50 }}>
@@ -109,23 +141,26 @@ function Home() {
                                 <span>Phòng bàn</span>
                             </span>
                         }>
-                        <Menu.Item key="Tables" style={{ marginRight: 50 }}>Bàn Trống</Menu.Item>
-                        <Menu.Item key="Tables1" style={{ marginRight: 50 }}>Bàn Đã Sử Dụng</Menu.Item>
+                        <Menu.Item onClick={()=>{
+                            getBanIDcontrong();
+                        }} style={{ marginRight: 50 }}>Bàn Trống</Menu.Item>
+                        <Menu.Item  style={{ marginRight: 50 }}>Bàn Đã Sử Dụng</Menu.Item>
                     </SubMenu> */}
 
 
                     {/* <SubMenu key="sub2"
                         style={{ marginRight: 70 }}
+                        
                         title={
-                            <span>
+                            <span  >
                                 <CalendarOutlined style={{ fontSize: '25px', color: '#111111' }} />
                                 <span>Đơn hàng</span>
                             </span>
-                        }>
-                        <Menu.Item key="/Bills" >Đơn hàng chờ chấp nhận</Menu.Item>
+                        }> */}
+                        {/* <Menu.Item key="/Bills" >Đơn hàng chờ chấp nhận</Menu.Item>
                         <Menu.Item key="/Billaccepted" >Đơn hàng đã chấp nhận</Menu.Item>
-                        <Menu.Item key="5" >Đơn hàng đã từ chối</Menu.Item>
-                    </SubMenu> */}
+                        <Menu.Item key="5" >Đơn hàng đã từ chối</Menu.Item> */}
+                    {/* </SubMenu> */}
                     {/* <SubMenu> */}
 
                     <Menu.Item
@@ -146,12 +181,16 @@ function Home() {
                     </Menu.Item>
 
                         {/* <div style={{right:0}}> */}
-                    <Menu.Item key="/Blog" style={{ float: 'right', right:0 , }}>
+                    <Menu.Item onClick={()=>{
+                        nav('Blog');
+                    }} style={{ float: 'right', right:0 , }}>
 
                         <UserOutlined /> Nhân Viên
                     </Menu.Item>
 
-                    <Menu.Item key="/Login" style={{ float: 'right',right:0, color: 'red' }} >
+                    <Menu.Item  onClick={()=>{
+                        nav('Login');
+                    }} style={{ float: 'right',right:0, color: 'red' }} >
 
                         <a onClick={handlelogout} >
                             Đăng xuất</a>
@@ -176,7 +215,7 @@ function Home() {
 
                             grid={{
                                 gutter: 100,
-                                column: 3,
+                                column: 4,
                             }}
                             dataSource={ban}
                             renderItem={(item) => (
@@ -206,7 +245,7 @@ function Home() {
                                         <br></br>
                                         Trạng Thái: {item.available ? "TRỐNG" : "CÓ KHÁCH"}
                                         <br></br>
-                                        Khu Vực : {item.area.ID === 1 ? "F1A1" : "F1A2"}
+                                        Khu Vực : {item.area.pos}
                                     </Card>
                                     </Button>
                                 </List.Item>

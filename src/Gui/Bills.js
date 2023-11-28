@@ -10,6 +10,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { formattedTimestamp } from '../utils/DateTime';
 import TextArea from 'antd/es/input/TextArea';
+import { URL } from '../contexts/url';
 
 function Bills() {
     let [searchParams, setSearchParams] = useSearchParams()
@@ -34,7 +35,7 @@ function Bills() {
     // /api/v1/booking/accepted/?orderId=1
     const acceptedbills = async (orderId) => {
         try {
-            const response = await axios.patch(`/api/v1/booking/accepted/?orderId=${orderId}`);
+            const response = await axios.post(`${URL}/api/v1/booking/accepted/?orderId=${orderId}`);
             if (response.data.statusCode === 200) {
                 nav(`/Billaccepted?id=${ban}`);
                 console.log("thanh công");
@@ -43,11 +44,17 @@ function Bills() {
         } catch (error) {
             console.log('error', error);
         }
+        // axios.patch(`/api/v1/booking/accepted/?orderId=${orderId}`, {}, {
+        //     headers: {
+        //         Authorization: `Bearer ${localStorage.getItem("userToken")}`
+        //     }
+        // })
+        // .then(data => console.log(data)).catch(err => console.log(err))
     }
     // /api/v1/booking/rejected/?orderId=1
     const rejectedbills = async (orderId,note) => {
         try {
-            const response = await axios.patch(`/api/v1/booking/rejected/?orderId=${orderId}&reason="${note}"`);
+            const response = await axios.post(`${URL}/api/v1/booking/rejected/?orderId=${orderId}&reason=${note}`);
             console.log(note);
             if (response.data.statusCode === 200) {
                 // nav(`/Billaccepted?id=${ban}`);
@@ -60,7 +67,7 @@ function Bills() {
     }
     const getBills = async () => {
         try {
-            const response = await axios.get(`/api/v1/booking/table/preparing/${ban}`)
+            const response = await axios.get(`${URL}/api/v1/booking/table/preparing/${ban}`)
 
             if (response.data.statusCode === 200) {
                 setBills(response.data.data);
@@ -85,9 +92,11 @@ function Bills() {
     const handleOk = () => {
         setModalText('Đang từ chối đơn');
         // rejectedbills(Bills.orderId)
+        setLoading(true)
         setConfirmLoading(true);
         setTimeout(() => {
             setOpen(false);
+            setLoading(false);
             setConfirmLoading(false);
         }, 2000);
     };
@@ -321,8 +330,8 @@ function Bills() {
                                             onCancel={handleCancel}
                                         >
                                             <TextArea
-                                                onChange={(text) => {
-                                                    setNote(text);
+                                                onChange={(e) => {
+                                                    setNote(e.target.value);
                                                 }}
                                                 placeholder="Nhập Lý Do từ chối đơn"
                                             />

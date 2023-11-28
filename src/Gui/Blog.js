@@ -5,6 +5,7 @@ import { AuthContext } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import hot_pot from '../Gui/Asset/hotpot.png'
 import axios from "axios";
+import { URL } from "../contexts/url";
 
 function Blog() {
     const nav = useNavigate();
@@ -24,7 +25,7 @@ function Blog() {
     const getThongtin = async () => {
         // await wait(3000);
         try {
-            const response = await axios.get(`api/v1/auth/me`);
+            const response = await axios.get(`${URL}/api/v1/auth/me`);
 
             if (response.data.message === "Get user info success: congrats!") {
                 setMe(response.data.data);
