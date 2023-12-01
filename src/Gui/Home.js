@@ -215,12 +215,13 @@ function Home() {
 
                             grid={{
                                 gutter: 100,
-                                column: 4,
+                                column: 3,
                             }}
                             dataSource={ban}
                             renderItem={(item) => (
-                               
+                          
                                 <List.Item  >
+                                    {item.available?<></>:
                                      <Button 
                                      href={`/bills?id=${item.ID}`}
                                      style={{
@@ -248,8 +249,9 @@ function Home() {
                                         Khu Vực : {item.area.pos}
                                     </Card>
                                     </Button>
+                            }
                                 </List.Item>
-                              
+                               
                             )}
                         />
 

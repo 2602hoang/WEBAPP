@@ -24,18 +24,19 @@ function Login() {
                 password: password
             })
             if ((!LoginData.success)) {
-                setErr(LoginData.message)
-                toast.success("Đăng nhập thành công!");
+                // errorLogin();
+                // toast.success("Đăng nhập thành công!");
                 setTimeout(() => setErr(''), 3000)
             }
             else {
-                setErr('Thông tin không chính xác');
-                toast.error("Email hoặc mật khẩu khồng đúng, vui lòng thử lại!");
+                errorLogin();
+                // toast.error("Email hoặc mật khẩu khồng đúng, vui lòng thử lại!");
                 nav("/");
             }
 
         } catch (error) {
             console.log(error);
+            // errorLogin();
             toast.error("Email hoặc mật khẩu khồng đúng, vui lòng thử lại!");
         }
     }
@@ -53,7 +54,7 @@ function Login() {
                     }}
                     rules={[
                         {
-                            // errorLogin,
+                             
                             required: true,
                             type: "string",
                             message: "Vui Lòng không để trống ",
@@ -70,7 +71,7 @@ function Login() {
                     }}
                     rules={[
                         {
-                            // errorLogin,
+                            
                             required: true,
                             message: "Vui Lòng không để trống",
                         },
@@ -85,7 +86,7 @@ function Login() {
                         textAlign: 'center',
                         padding: 5,
                         color: 'red'
-                    }}>{err}</div>
+                    }}>{ errorLogin}</div>
                 <Button block style={{ height: 40, fontWeight: "bold" }} type="primary" htmlType="submit">Đăng Nhập</Button>
             </Form>
 

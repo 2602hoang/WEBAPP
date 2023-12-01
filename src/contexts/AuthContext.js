@@ -41,7 +41,7 @@ export const AuthContextProvider = ({ children }) => {
 			  } )
 			
 			if (response.data.message ==="Sign up success: welcome!") {
-				toast.success("Đăng nhập thành công!");
+				// toast.success("Đăng nhập thành công!");
 				setErrorLogin('Đăng nhập thành công');
 				setTimeout(() =>{
 					setErrorLogin('');
@@ -56,7 +56,7 @@ export const AuthContextProvider = ({ children }) => {
 			
 		} catch (error) {
 			console.log('Loging error: ',error);
-			toast.error("Email hoặc mật khẩu khồng đúng, vui lòng thử lại!");
+			//  toast.error("Email hoặc mật khẩu khồng đúng, vui lòng thử lại!");
 			setErrorLogin('Thông tin không chính xác');
 			setTimeout(() =>{
 						setErrorLogin('');
