@@ -60,20 +60,26 @@ function Bills() {
         try {
             const response = await axios.post(`${URL}/api/v1/booking/rejected/?orderId=${orderId}&reason=${note}`);
             console.log(note);
-            if (response.data.statusCode === 200) {
-                // nav(`/Billaccepted?id=${ban}`);
+            if (response.status === 307) {
+                // Follow the redirect
+                const redirectURL = response.headers['Location'];
+                await axios.post(redirectURL);
+              } else if (response.data.statusCode === 200) {
+                // Handle successful response
                 console.log("thanh công");
                 setThongbao("thành công");
                 alert("từ chối đơn thành công");
                 setTimeout(() => {
-                    setThongbao('');
-                }, 10000)
+                  setThongbao('');
+                }, 10000);
+              } else {
+                // Handle other status codes
+                console.error('Unexpected response status:', response.status);
+              }
+            } catch (error) {
+              console.error('Error rejecting order:', error);
             }
-
-        } catch (error) {
-            console.log('error', error);
-        }
-    }
+          };
     const getBills = async () => {
         try {
             const response = await axios.get(`${URL}/api/v1/booking/table/preparing/${ban}`)
