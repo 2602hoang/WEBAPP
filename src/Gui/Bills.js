@@ -1,6 +1,6 @@
 
 import React, { useContext, useEffect, useState } from 'react';
-import { Layout, Menu, Breadcrumb, Col, Row, Card, Spin, List, Input, Switch, Divider, Button, Modal } from 'antd';
+import { Layout, Menu, Breadcrumb, Col, Row, Card, Spin, List, Input, Switch, Divider, Button, Modal, Alert, } from 'antd';
 import { UserOutlined, TableOutlined, CalendarOutlined, ReloadOutlined, LogoutOutlined, HomeOutlined, BankTwoTone, CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import hot_pot from '../Gui/Asset/hotpot.png'
 import { AuthContext } from "../contexts/AuthContext";
@@ -16,7 +16,7 @@ function Bills() {
     let [searchParams, setSearchParams] = useSearchParams()
     const ban = searchParams.get('id');
 
-
+    const [thongbao, setThongbao] = useState(null);
 
     useEffect(() => {
         getBills();
@@ -38,7 +38,11 @@ function Bills() {
             const response = await axios.post(`${URL}/api/v1/booking/accepted/?orderId=${orderId}`);
             if (response.data.statusCode === 200) {
                 nav(`/Billaccepted?id=${ban}`);
-                console.log("thanh công");
+                setThongbao("thành công");
+                alert("xác nhận đơn thành công");
+                setTimeout(() => {
+                    setThongbao('');
+                }, 10000)
             }
 
         } catch (error) {
@@ -52,13 +56,18 @@ function Bills() {
         // .then(data => console.log(data)).catch(err => console.log(err))
     }
     // /api/v1/booking/rejected/?orderId=1
-    const rejectedbills = async (orderId,note) => {
+    const rejectedbills = async (orderId, note) => {
         try {
             const response = await axios.post(`${URL}/api/v1/booking/rejected/?orderId=${orderId}&reason=${note}`);
             console.log(note);
             if (response.data.statusCode === 200) {
                 // nav(`/Billaccepted?id=${ban}`);
                 console.log("thanh công");
+                setThongbao("thành công");
+                alert("từ chối đơn thành công");
+                setTimeout(() => {
+                    setThongbao('');
+                }, 10000)
             }
 
         } catch (error) {
@@ -83,11 +92,16 @@ function Bills() {
     const nav = useNavigate();
     const [bills, setBills] = useState([]);
     const [open, setOpen] = useState(false);
+    const [open1, setOpen1] = useState(false);
+    const [answer, setAnswer] = useState("");
     const [note, setNote] = useState('');
     const [confirmLoading, setConfirmLoading] = useState(false);
     const [modalText, setModalText] = useState('Content of the modal');
     const showModal = () => {
         setOpen(true);
+    };
+    const showModal1 = () => {
+        setOpen1(true);
     };
     const handleOk = () => {
         setModalText('Đang từ chối đơn');
@@ -103,6 +117,20 @@ function Bills() {
     const handleCancel = () => {
         console.log('Clicked cancel button');
         setOpen(false);
+    };const handleOk1 = () => {
+        setModalText('Đang từ chối đơn');
+        // rejectedbills(Bills.orderId)
+        setLoading(true)
+        setConfirmLoading(true);
+        setTimeout(() => {
+            setOpen1(false);
+            setLoading(false);
+            setConfirmLoading(false);
+        }, 2000);
+    };
+    const handleCancel1 = () => {
+        console.log('Clicked cancel button');
+        setOpen1(false);
     };
 
 
@@ -308,9 +336,21 @@ function Bills() {
                                         <div style={{ flexDirection: 'row' }}>
                                             <Button
                                                 onClick={() => {
-                                                    acceptedbills(item.orderId);
+                                                    
+
+                                                    showModal1();
+                                                    
+                                                   
                                                 }}
                                                 block style={{ height: 40, width: '50%', fontWeight: "bold", backgroundColor: '#00FF00' }} type="primary" htmlType="submit">Xác Nhận</Button>
+                                            <div
+                                                style={{
+                                                    textAlign: 'center',
+                                                    padding: 5, 
+                                                    color: 'red'
+                                                }}>{thongbao}</div>
+                                                
+
                                             <Button
                                                 onClick={() => {
                                                     //  rejectedbills(item.orderId);
@@ -319,12 +359,20 @@ function Bills() {
                                                 block style={{ height: 40, width: '50%', fontWeight: "bold", backgroundColor: 'red' }} type="primary" htmlType="submit">Từ Chối</Button>
                                         </div>
                                         <Modal
-                                            title="Lý Do Từ Chối"
+                                        //    key={showModal}
+                                           title="Lý Do Từ Chối"
                                             open={open}
-                                            onOk={()=>{
+                                            onOk={() => {
                                                 handleOk();
-                                                console.log("note nè",note);
-                                                rejectedbills(item.orderId,note);
+                                                console.log("note nè", note);
+                                                rejectedbills(item.orderId, note);
+                                                <div
+                                                    style={{
+                                                        textAlign: 'center',
+                                                        padding: 5,
+                                                        color: 'red'
+                                                    }}>{thongbao}</div>
+
                                             }}
                                             confirmLoading={confirmLoading}
                                             onCancel={handleCancel}
@@ -336,6 +384,27 @@ function Bills() {
                                                 placeholder="Nhập Lý Do từ chối đơn"
                                             />
                                         </Modal>
+                                        <Modal
+                                        
+                                            title="Bạn có muốn xác nhận đơn? "
+                                            open={open1}
+                                            onOk={() => {
+                                                handleOk1();
+                                               
+                                                acceptedbills(item.orderId);
+                                                <div
+                                                    style={{
+                                                        textAlign: 'center',
+                                                        padding: 5,
+                                                        color: 'red'
+                                                    }}>{thongbao}</div>
+
+                                            }}
+                                            confirmLoading={confirmLoading}
+                                            onCancel={handleCancel1}
+                                        >
+                                        
+                                        </Modal>
                                     </Card>
                                 </List.Item>
 
@@ -345,6 +414,7 @@ function Bills() {
                     </div>
                 </Content>
             </Spin>
+
 
         </Layout>
 

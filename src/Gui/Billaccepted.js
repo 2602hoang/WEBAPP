@@ -1,6 +1,6 @@
 
 import React, { useContext, useEffect, useState } from 'react';
-import { Layout, Menu, Breadcrumb, Col, Row, Card, Spin, List, Input, Switch, Divider, Button, Checkbox } from 'antd';
+import { Layout, Menu, Breadcrumb, Col, Row, Card, Spin, List, Input, Switch, Divider, Button, Checkbox, Modal, Alert, Space, Popconfirm } from 'antd';
 import { UserOutlined, TableOutlined, CalendarOutlined, ReloadOutlined, LogoutOutlined, HomeOutlined, BankTwoTone, CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import hot_pot from '../Gui/Asset/hotpot.png'
 import { AuthContext } from "../contexts/AuthContext";
@@ -14,6 +14,7 @@ import { URL } from '../contexts/url';
 function Billaccepted() {
     let [searchParams, setSearchParams] = useSearchParams()
     const [reload, setReload] = useState(false);
+    const [thongbao, setThongbao] = useState(null);
     const banid = searchParams.get('id');
     console.log(banid);
     useEffect(() => {
@@ -25,11 +26,11 @@ function Billaccepted() {
     }, [reload]);
     useEffect(() => {
         const intervalId = setInterval(() => {
-          getBillaccepted();
-        }, 10000); 
-      
-        return () => clearInterval(intervalId); 
-      }, []);
+            getBillaccepted();
+        }, 10000);
+
+        return () => clearInterval(intervalId);
+    }, []);
 
     const [isActive, setIsActive] = useState(false);
     const xacnhanmon = async (id) => {
@@ -38,7 +39,10 @@ function Billaccepted() {
 
             if (response.data.statusCode === 200) {
                 setXacnhan(response.data.data);
-                console.log("okee12340", response.data.data);
+                setThongbao('đã cung ứng món thành công');
+                setTimeout(() => {
+                    setThongbao('');
+                }, 1000)
                 setReload(!reload);
             }
 
@@ -61,13 +65,34 @@ function Billaccepted() {
             console.log('error: ', error);
         }
     }
-    const [xacnhan,setXacnhan]=useState([]);
+    const [xacnhan, setXacnhan] = useState([]);
     const nav = useNavigate();
     const { Logout } = useContext(AuthContext);
     const [billaccepted, setBillaccepted] = useState([]);
     const [check, setCheck] = useState(false)
     const [loading, setLoading] = useState(false)
-    const { Header, Content ,Footer} = Layout;
+    const { Header, Content, Footer } = Layout;
+    const [open, setOpen] = useState(false);
+    const [confirmLoading, setConfirmLoading] = useState(false);
+    const [modalText, setModalText] = useState('Content of the modal');
+    const showModal = () => {
+        setOpen(true);
+    };
+    const handleOk = () => {
+        // setModalText('Đang từ chối đơn');
+        // rejectedbills(Bills.orderId)
+        setLoading(true)
+        setConfirmLoading(true);
+        setTimeout(() => {
+            setOpen(false);
+            setLoading(false);
+            setConfirmLoading(false);
+        }, 2000);
+    };
+    const handleCancel = () => {
+        console.log('Clicked cancel button');
+        setOpen(false);
+    };
     const handlelogout = async () => {
         await Logout()
         window.location.reload(false);
@@ -159,7 +184,7 @@ function Billaccepted() {
                         // onClick={() => {
                         //     setLoading(preValue => !preValue);
                         //     // getBills();
-                            
+
                         // }}
                         onClick={() => {
                             setLoading(true)
@@ -167,7 +192,7 @@ function Billaccepted() {
                             setTimeout(() => {
                                 setLoading(false);
                             }, 1000);
-                           
+
 
                         }}
                         key="Billaccepted" style={{ marginRight: 800 }} >
@@ -206,7 +231,7 @@ function Billaccepted() {
             <Spin spinning={loading}>
                 <Content style={{ padding: 50 }} spi>
 
-                    <div style={{ background: '#ffffcc', padding: 24, minHeight: 280 ,flexDirection:'row'}}>
+                    <div style={{ background: '#ffffcc', padding: 24, minHeight: 280, flexDirection: 'row' }}>
 
 
                         <List
@@ -214,7 +239,7 @@ function Billaccepted() {
                             grid={{
                                 gutter: 100,
                                 column: 2,
-                                Row:1
+                                Row: 1
                             }}
                             dataSource={billaccepted}
                             renderItem={(item) => (
@@ -247,58 +272,85 @@ function Billaccepted() {
                                             <br />
                                             Đơn Hàng Của Bàn :({item.table.ID})
                                             <br />
-                                            
+
                                         </div>
                                         <br />
-                                        
 
-                                        {item && item.items &&  item.items.map((product, index) => (
-                                        <Card key={product.product.ID}>
-                                            
 
-                                            <br />
-                                            Tên Món: {product.product.name}
+                                        {item && item.items && item.items.map((product, index) => (
+                                            <Card key={product.product.ID}>
 
-                                            <br />
-                                            Số Lượng: {product.quantity}
-                                            <br></br>
-                                            <Button
-                                                block
-                                                style={{ height: 40, fontWeight: "bold", width: 200,
-                                                backgroundColor: product.status? '#FF0000' : '#00FF00',
-                                            }}
-                                                type="primary"
-                                                htmlType="submit"
-                                                disabled={check}
-                                                onClick={() => {
-                                                     xacnhanmon(product.billId);
-                                                }}
-                                            >
-                                                Xác Nhận ra Món
-                                            </Button>
-                                           
-                                            
-                                            <br />
-                                            
-                                        </Card>
-                                        
-                                            ))}
-                                           
-                                        
+
+                                                <br />
+                                                Tên Món: {product.product.name}
+
+                                                <br />
+                                                Số Lượng: {product.quantity}
+                                                <br></br>
+                                                <Popconfirm
+                                                    title="Xác nhận cung ứng món "
+                                                    description="Món ăn đã sẵn sàng ra?"
+                                                    onConfirm={() => {
+                                                         "đúng";
+                                                        xacnhanmon(product.billId);
+                                                    }}
+                                                    onCancel={() => {
+                                                         "sai";
+                                                    }}
+                                                >
+                                                    <Button
+                                                        block
+                                                        style={{
+                                                            height: 40,
+                                                            fontWeight: "bold",
+                                                            width: 200,
+                                                            backgroundColor: product.status ? "#FF0000" : "#00FF00",
+                                                        }}
+                                                        type="primary"
+                                                        htmlType="submit"
+                                                        disabled={check}
+                                                        onClick={() => {
+                                                            // xacnhanmon(product.billId);
+                                                            // alert("xác nhận ra món");
+                                                        }}
+                                                    >
+                                                        Xác Nhận ra Món
+                                                    </Button>
+                                                </Popconfirm>
+                                                {product.status ?
+                                                    <div
+                                                        style={{
+                                                            textAlign: 'center',
+                                                            padding: 5,
+                                                            color: 'red'
+                                                        }}>{thongbao}</div>
+
+                                                    : <></>}
+
+
+                                                <br />
+
+
+                                            </Card>
+
+                                        ))}
+
+
                                     </Card>
-                                    
+
+
                                 </List.Item>
 
                             )}
                         />
-                         
+
 
 
 
                     </div>
                 </Content>
             </Spin>
-         
+
         </Layout>
 
 

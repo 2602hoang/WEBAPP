@@ -1,24 +1,24 @@
-// const { createProxyMiddleware } = require('http-proxy-middleware');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
 // module.exports = function (app) {
 //     app.use(
 //         '/api',
 //         createProxyMiddleware('/api/v1/auth/sign-in',{
-//             target: 'http://localhost:3001',
+//             target: 'https://food-delivery-api-f1u2.onrender.com',
 //             changeOrigin: true,
 //         })
 //     );
 //     app.use(
 //         '/api',
 //         createProxyMiddleware('/api/v1/tables/all',{
-//             target: 'http://localhost:3001',
+//             target: 'https://food-delivery-api-f1u2.onrender.com',
 //             changeOrigin: true,
 //         })
 //     );
 //     app.use(
 //         '/api',
 //         createProxyMiddleware('/api/v1/booking/table/preparing/',{
-//             target: 'http://localhost:3001',
+//             target: 'https://food-delivery-api-f1u2.onrender.com',
 //             changeOrigin: true,
 //         })
 //     );
@@ -26,7 +26,7 @@
 //     app.use(
 //         '/api',
 //         createProxyMiddleware('/api/v1/booking/table/',{
-//             target: 'http://localhost:3001',
+//             target: 'https://food-delivery-api-f1u2.onrender.com',
 //             changeOrigin: true,
 //         })
 //     );
@@ -34,21 +34,21 @@
 //     app.use(
 //         '/api',
 //         createProxyMiddleware('/api/v1/booking/accepted/?orderId=',{
-//             target: 'http://localhost:3001',
+//             target: 'https://food-delivery-api-f1u2.onrender.com',
 //             changeOrigin: true,
 //         })
 //     );
 //     app.use(
 //         '/api',
 //         createProxyMiddleware('api/v1/auth/me',{
-//             target: 'http://localhost:3001',
+//             target: 'https://food-delivery-api-f1u2.onrender.com',
 //             changeOrigin: true,
 //         })
 //     );
 //     app.use(
 //         '/api',
 //         createProxyMiddleware('/api/v1/bills/finished/',{
-//             target: 'http://localhost:3001',
+//             target: 'https://food-delivery-api-f1u2.onrender.com',
 //             changeOrigin: true,
 //         })
 //     );
@@ -56,21 +56,21 @@
 //     app.use(
 //         '/api',
 //         createProxyMiddleware('/api/v1/booking/rejected/?orderId=',{
-//             target: 'http://localhost:3001',
+//             target: 'https://food-delivery-api-f1u2.onrender.com',
 //             changeOrigin: true,
 //         })
 //     );
 //     app.use(
 //         '/api',
 //         createProxyMiddleware('/api/v1/tables/status/false',{
-//             target: 'http://localhost:3001',
+//             target: 'https://food-delivery-api-f1u2.onrender.com',
 //             changeOrigin: true,
 //         })
 //     );
 //     app.use(
 //         '/api',
 //         createProxyMiddleware('/api/v1/tables/status/true',{
-//             target: 'http://localhost:3001',
+//             target: 'https://food-delivery-api-f1u2.onrender.com',
 //             changeOrigin: true,
 //         })
 //     );
