@@ -55,13 +55,13 @@ function Home() {
         }, 2000);
     }, []);
 
-    // useEffect(() => {
-    //     const intervalId = setInterval(() => {
-    //       getBan();
-    //     }, 10000); 
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+          getBan();
+        }, 10000); 
       
-    //     return () => clearInterval(intervalId); 
-    //   }, []);
+        return () => clearInterval(intervalId); 
+      }, []);
 
 
     const getBan = async () => {
