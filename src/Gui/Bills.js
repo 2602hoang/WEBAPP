@@ -60,26 +60,20 @@ function Bills() {
         try {
             const response = await axios.post(`${URL}/api/v1/booking/rejected/?orderId=${orderId}&reason=${note}`);
             console.log(note);
-            if (response.status === 307) {
-                // Follow the redirect
-                const redirectURL = response.headers['Location'];
-                await axios.post(redirectURL);
-              } else if (response.data.statusCode === 200) {
-                // Handle successful response
+            if (response.data.statusCode === 200) {
+                // nav(`/Billaccepted?id=${ban}`);
                 console.log("thanh công");
                 setThongbao("thành công");
                 alert("từ chối đơn thành công");
                 setTimeout(() => {
-                  setThongbao('');
-                }, 10000);
-              } else {
-                // Handle other status codes
-                console.error('Unexpected response status:', response.status);
-              }
-            } catch (error) {
-              console.error('Error rejecting order:', error);
+                    setThongbao('');
+                }, 10000)
             }
-          };
+
+        } catch (error) {
+            console.log('error', error);
+        }
+    }
     const getBills = async () => {
         try {
             const response = await axios.get(`${URL}/api/v1/booking/table/preparing/${ban}`)
@@ -167,33 +161,18 @@ function Bills() {
                     defaultSelectedKeys={['1']}
                     defaultOpenKeys={['sub1']}
 
-                    // onClick={onMenuClcik}
-                    // onClick={onMenuClcik}
+                    
                     mode="horizontal" style={{ lineHeight: '64px', }}>
 
-                    {/* <Button
-                    style={{height:50,marginTop:10,marginRight:20}}
-                          
-                          href={"/"}
-                    > */}
+                    
                     <Menu.Item
-
-
-
                         style={{ marginRight: 50 }}>
                         <HomeOutlined style={{ fontSize: '25px', color: '#111111', marginRight: 5 }}></HomeOutlined>
                         <span onClick={() => {
                             nav("/");
                         }}> Trang chủ</span>
                     </Menu.Item>
-                    {/* </Button> */}
-
-
-
-                    {/* <Button style={{height:50,marginTop:10,marginRight:20}}
-                          
-                          href={`/Bills?id=${ban}`}
-                              > */}
+                    
                     <SubMenu key="Bills"
                         style={{ marginRight: 50 }}
                         title={
@@ -252,7 +231,7 @@ function Bills() {
 
 
                         }}
-                        key="Bills" style={{ marginRight: 800 }} >
+                        key="Bills" style={{ marginRight: 600 }} >
                         <ReloadOutlined style={{ fontSize: '25px', color: '#111111', marginRight: 3 }} />
                         Làm mới</Menu.Item>
                     <Menu.Item>

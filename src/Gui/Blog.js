@@ -9,7 +9,7 @@ import { URL } from "../contexts/url";
 
 function Blog() {
     const nav = useNavigate();
-    const { Header, Content,Footer } = Layout;
+    const { Header, Content, Footer } = Layout;
     const { Logout } = useContext(AuthContext);
     const handlelogout = async () => {
         await Logout()
@@ -58,12 +58,12 @@ function Blog() {
                         Trang chủ
                     </Menu.Item>
 
-                    <Menu.Item key="/Blog" style={{ float: 'right', marginRight: 5, marginLeft: 1200 }}>
+                    <Menu.Item key="/Blog" style={{  marginLeft:1200 }}>
 
                         <UserOutlined /> Nhân Viên
                     </Menu.Item>
 
-                    <Menu.Item key="/Login" style={{ float: 'right', marginRight: 50, color: 'red' }} >
+                    <Menu.Item key="/Login" style={{  color: 'red' }} >
 
                         <a onClick={handlelogout} >
                             Đăng xuất</a>
@@ -75,38 +75,70 @@ function Blog() {
 
 
                 </Menu>
-                </Header>
-                <Content style={{ padding: 100 }} spi>
+            </Header>
+            <Content style={{ padding: 200 }} spi>
 
-                    <div style={{ background: '#ffffcc', padding: 100,justifyContent:'center',alignItems:'center ',alignSelf:'center' }}>
+                <div style={{ background: '#ffffcc', padding: 100, justifyContent: 'center', alignItems: 'center ', alignSelf: 'center', flex:1 }}>
 
-                        
-                            <Card
-                                title="Thông Tin Nhân Viên Bếp "
-                                // extra={<a href="#">More</a>}
-                                style={{
-                                    width: '80%',
-                                    height: '80%',
-                                    justifySelf:'center'
-                                }}
-                            >
-                                <p>Họ và Tên Nhân Viên :     &nbsp;&nbsp;&nbsp;&nbsp;      {me.fullName}</p>
-                                <p>Số Điện Thoại Của Nhân Viên:   &nbsp;&nbsp;&nbsp;&nbsp;          {me.tel}</p>
-                                <p>Giới Tính Nhân Viên :  &nbsp;&nbsp;&nbsp;&nbsp;          {me.gender? "Nữ":"Nam"}</p>
-                                <p>Chức vụ: &nbsp;&nbsp;&nbsp;&nbsp; {me.ID===3? "Nhân Viên Bếp":"Nhân Viên"}</p>
-                            </Card>
 
-                        
+                    <Card
+                        title="Thông Tin Nhân Viên Bếp "
+                        // extra={<a href="#">More</a>}
+                        style={{
+                            width: '80%',
+                            height: '80%',
+                            justifySelf: 'center'
+                        }}
+                    >
+                        <p>Họ và Tên Nhân Viên :     &nbsp;&nbsp;&nbsp;&nbsp;      {me.fullName}</p>
+                        <p>Số Điện Thoại Của Nhân Viên:   &nbsp;&nbsp;&nbsp;&nbsp;          {me.tel}</p>
+                        <p>Giới Tính Nhân Viên :  &nbsp;&nbsp;&nbsp;&nbsp;          {me.gender ? "Nữ" : "Nam"}</p>
+                        <p>Chức vụ: &nbsp;&nbsp;&nbsp;&nbsp; {me.ID === 3 ? "Nhân Viên Bếp" : "Nhân Viên"}</p>
+                    </Card>
 
 
 
 
-                    </div>
-                </Content>
+
+
+                </div>
+            </Content>
+            <div style={{margin:300}}></div>
+            {/* <div style={{float:'inline-end'}}> */}
+            <Footer style={{float:'inline-end',alignSelf:"unset"}} >
+                <div style={{ float: 'left' }}>
+                    <a1>BẾP NHÀ HÀNG LẨU XUÝT XOA</a1>
+                    <br></br>
+                    <h>Chức năng:
+                        <br></br>
+                        Nhận Đơn Theo Bàn
+                        <br></br>
+                        Từ chối Đơn Theo Bàn
+                        <br></br>
+                        Xác Nhận Món Ăn Đã Ra Theo Đơn
+                    </h >
+                </div>
+
+                {/* <div style={{textAlign:'center',color:'red'}}>
+                <h1>LÀM VIỆC VỚI CÁI TÂM HƯỚNG VỀ KHÁCH HÀNG</h1>
+            </div> */}
+                <div style={{ float: 'right' }}>
+                    {/* <a1>BẾP NHÀ HÀNG LẨU XUÝT XOA</a1> */}
+                    <br></br>
+                    <a>Liên Hệ:
+                        <br></br>
+                        @fda.offical
+                        <br></br>
+                        fda.contact
+                        <br></br>
+                        0364015071
+                    </a>
+                </div>
+            </Footer>
+            {/* </div> */}
 
 
 
-      
         </Layout>
 
     )

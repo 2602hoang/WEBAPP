@@ -195,7 +195,7 @@ function Billaccepted() {
 
 
                         }}
-                        key="Billaccepted" style={{ marginRight: 800 }} >
+                        key="Billaccepted" style={{ marginRight: 600 }} >
                         <ReloadOutlined style={{ fontSize: '25px', color: '#111111', marginRight: 3 }} />
                         Làm mới</Menu.Item>
                     <Menu.Item>

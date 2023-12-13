@@ -21,23 +21,47 @@ import { URL } from '../contexts/url';
 
 
 function Home() {
+    const nav = useNavigate();
+    const [ban, setban] = useState([]);
 
-
+    const [loading, setLoading] = useState(false)
+    const { Logout } = useContext(AuthContext);
+    const { Header, Content ,Footer} = Layout;
+    const [timban, setTimban] = useState('');
+    const handleSearch = (e) => {
+        e.preventDefault();
+        try {
+            if (timban) {
+                // Filter the list of tables based on the user's input
+                setban(ban.filter((table) => table.ID.includes(timban)));
+              } else {
+                // Reset the list of tables to show all
+                getBan();
+                alert(' hiển thị tất cả bàn đang có khách')
+              }
+            
+        } catch (error) {
+           alert('không tìm thấy bàn '+timban) 
+        }
+        
+      };
     useEffect(() => {
         getBan();
         //setLoading(true);
+        // getBanIDcontrong();
+        // getBanIDsudung();
         setTimeout(() => {
             setLoading(false);
         }, 2000);
     }, []);
 
-    useEffect(() => {
-        const intervalId = setInterval(() => {
-          getBan();
-        }, 10000); 
+    // useEffect(() => {
+    //     const intervalId = setInterval(() => {
+    //       getBan();
+    //     }, 10000); 
       
-        return () => clearInterval(intervalId); 
-      }, []);
+    //     return () => clearInterval(intervalId); 
+    //   }, []);
 
 
     const getBan = async () => {
@@ -62,7 +86,7 @@ function Home() {
             if (response.data.message === "Read Table by employeeId and status success: congrats!") {
                 setban(response.data.data);
             }
-            // console.log("ok",JSON.parse(response.data.data));
+             console.log("ok",JSON.parse(response.data.data));
 
         } catch (error) {
             
@@ -78,7 +102,7 @@ function Home() {
                 setban(response.data.data);
             }
             // console.log('con trong')
-            // console.log("ok",response.data.data);
+            console.log("ok",response.data.data);
 
         } catch (error) {
             
@@ -86,12 +110,7 @@ function Home() {
         }
         
     }
-    const nav = useNavigate();
-    const [ban, setban] = useState([]);
-
-    const [loading, setLoading] = useState(false)
-    const { Logout } = useContext(AuthContext);
-    const { Header, Content ,Footer} = Layout;
+    
     //const { Header, Content } = Layout;
 
 
@@ -121,47 +140,19 @@ function Home() {
                     defaultOpenKeys={['sub1']}
 
 
-                    // onClick={onMenuClcik}
+                    
                     mode="horizontal" style={{ lineHeight: '64px', }}>
 
-                    <Menu.Item key="/" style={{ marginRight: 50 }}>
+                    <Menu.Item style={{ marginRight: 50 }}>
                         <HomeOutlined onClick={() => {
                             getBan();
+                            nav("/");
                         }} style={{ fontSize: '25px', color: '#111111', marginRight: 5 }}></HomeOutlined>
                         Trang chủ
                     </Menu.Item>
-
-                    {/* <SubMenu key="/"
-                        style={{ marginRight: 70 }}
-                        title={
-                            <span
-
-                            >
-                                <TableOutlined style={{ fontSize: '25px', color: '#111111' }} />
-                                <span>Phòng bàn</span>
-                            </span>
-                        }>
-                        <Menu.Item onClick={()=>{
-                            getBanIDcontrong();
-                        }} style={{ marginRight: 50 }}>Bàn Trống</Menu.Item>
-                        <Menu.Item  style={{ marginRight: 50 }}>Bàn Đã Sử Dụng</Menu.Item>
-                    </SubMenu> */}
+                 
 
 
-                    {/* <SubMenu key="sub2"
-                        style={{ marginRight: 70 }}
-                        
-                        title={
-                            <span  >
-                                <CalendarOutlined style={{ fontSize: '25px', color: '#111111' }} />
-                                <span>Đơn hàng</span>
-                            </span>
-                        }> */}
-                        {/* <Menu.Item key="/Bills" >Đơn hàng chờ chấp nhận</Menu.Item>
-                        <Menu.Item key="/Billaccepted" >Đơn hàng đã chấp nhận</Menu.Item>
-                        <Menu.Item key="5" >Đơn hàng đã từ chối</Menu.Item> */}
-                    {/* </SubMenu> */}
-                    {/* <SubMenu> */}
 
                     <Menu.Item
                         onClick={() => {
@@ -173,7 +164,7 @@ function Home() {
                            
 
                         }}
-                        key="/" style={{ marginRight: 1200 }} >
+                        key="/" style={{ marginRight: 1100 }} >
                         <ReloadOutlined style={{ fontSize: '25px', color: '#111111', marginRight: 3 }} />
                         Làm mới</Menu.Item>
                     <Menu.Item>
@@ -206,18 +197,49 @@ function Home() {
 
 
             </Header>
+            <div  style={{width:"30%",alignSelf:'flex-end',height:100,margin:5}} >
+            <form 
+           
+            onSubmit={handleSearch}>
+              <input
+                type="number"
+                pattern="[0-9]+"
+                style={{width:"30%",alignSelf:'flex-end',height:40,margin:5,paddingLeft:5}}
+                value={timban}
+                onChange={(e) => setTimban(e.target.value)}
+                placeholder="  Tìm kiếm tên bàn là số "
+                
+            
+              />
+              <button
+              style={{height:40}}
+              type="submit">Tìm kiếm</button>
+            </form>
+            </div>
             <Spin spinning={loading}>
                 <Content style={{ padding: 50 }} spi>
+                {/* <button 
+                onClick={()=>{
+                    getBanIDsudung();
+                }}
+                >ban su dung</button>
+                <button 
+                onClick={()=>{
+                    getBanIDcontrong();
+                }}
+                >ban su dung</button> */}
 
-                    <div style={{ background: '#ffffcc', padding: 24, minHeight: 280 }}>
+                    <div style={{ background: '#ffffcc', padding: 24, minHeight: 280,alignSelf:'center',justifyContent:'center', }}>
 
                         <List
-
+                            style={{width:"100%", alignSelf:'center',justifyContent:'center',alignContent:'center',alignItems:'center'}}
                             grid={{
                                 gutter: 100,
-                                column: 3,
+                                column: 1,
                             }}
-                            dataSource={ban}
+                            dataSource={
+                                timban? ban.filter(ban=>ban.ID ==timban):
+                                ban}
                             renderItem={(item) => (
                           
                                 <List.Item  >
@@ -260,7 +282,7 @@ function Home() {
                     </div>
                 </Content>
             </Spin>
-            <Footer >
+            <Footer style={{marginTop:600,width:'100%'}} >
                 <div style={{float:'left'}}>
             <a1>BẾP NHÀ HÀNG LẨU XUÝT XOA</a1>
             <br></br>
